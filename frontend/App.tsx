@@ -12,6 +12,7 @@ import {
   Input,
   InputField,
   HStack,
+  Center,
 } from "@gluestack-ui/themed";
 import { ScrollView } from "react-native";
 import Gradient from "./assets/Icons/Gradient";
@@ -73,27 +74,27 @@ export default function App() {
 
   return (
     <GluestackUIProvider config={config}>
-      <VStack p="$3" gap="$2">
-        {data.shared?.io?.map((io: any, index) => {
-          console.log(io);
+      <VStack p="$3" gap="$2" sx={{ _ios: { pt: "$16" } }}>
+        {data.shared?.ui?.map((ui: any, index) => {
+          console.log(ui);
 
-          let ioHandler = {
+          let uiHandler = {
             resolve: (val) => {
               console.log("Resolving", val);
               client?.socket?.emit("resolve", {
                 value: val,
-                ioID: index,
+                uiID: index,
               });
               //client.updateSharedData({ ...data.shared, io: null });
             },
           };
 
-          switch (io?.type) {
+          switch (ui?.type) {
             case "print":
-              return <Print ioHandler={ioHandler}>{io.children}</Print>;
+              return <Print uiHandler={uiHandler}>{ui.children}</Print>;
               break;
             case "scan":
-              return <Scan ioHandler={ioHandler}>{io.children}</Scan>;
+              return <Scan uiHandler={uiHandler}>{ui.children}</Scan>;
               break;
 
             default:
@@ -109,7 +110,7 @@ function Print({ children }) {
   return <Heading>{children}</Heading>;
 }
 
-function Scan({ ioHandler, children }) {
+function Scan({ uiHandler, children }) {
   const [val, setVal] = useState("");
 
   return (
@@ -120,6 +121,7 @@ function Scan({ ioHandler, children }) {
         isDisabled={false}
         isInvalid={false}
         isReadOnly={false}
+        w="$32"
       >
         <InputField
           placeholder={children}
@@ -127,7 +129,7 @@ function Scan({ ioHandler, children }) {
           onChangeText={(t) => setVal(t)}
         />
       </Input>
-      <Button onPress={() => ioHandler.resolve(val)}>
+      <Button onPress={() => uiHandler.resolve(val)}>
         <ButtonText> ⏎ </ButtonText>
       </Button>
     </HStack>

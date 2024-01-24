@@ -17,25 +17,29 @@ class AdditionAction implements Action {
   }
 
   async invoke() {
-    const io = this.client.io;
+    const ui = this.client.ui;
 
-    let x = await io.scan("Value of X?");
-    let y = await io.scan("Value of Y?");
-    io.print("x + y = " + (parseInt(x) + parseInt(y)));
+    ui.print(`Enter your first name`);
+    let firstName = await ui.scan("firstName = ");
+
+    ui.print(`Enter your last name`);
+    let lastName = await ui.scan("lastName = ");
+
+    ui.print(`Hello ${firstName} ${lastName}!`);
   }
 }
 
 class Client {
-  io: ClientIO;
+  ui: ClientUI;
 
   constructor(socket) {
-    this.io = new ClientIO(this);
+    this.ui = new ClientUI(this);
 
     this.socket = socket;
     this.data = {
       server: {},
       shared: {
-        io: [],
+        ui: [],
       },
     };
   }
@@ -54,7 +58,7 @@ class Client {
   }
 }
 
-class ClientIO {
+class ClientUI {
   client: Client;
 
   constructor(client: Client) {
@@ -69,16 +73,16 @@ class ClientIO {
   }
 
   async scan(text: string): Promise<string> {
-    const ioID = this.renderAppend({
+    const uiID = this.renderAppend({
       type: "scan",
       children: text,
     });
 
-    console.log("SCANID", ioID);
+    console.log("SCANID", uiID);
 
     return new Promise((resolve) => {
       this.client.socket.on("resolve", (data) => {
-        if (data.ioID == ioID) {
+        if (data.uiID == uiID) {
           resolve(data.value);
         }
       });
@@ -94,10 +98,10 @@ class ClientIO {
       ...this.client.data,
       shared: {
         ...this.client.data.shared,
-        io: [data],
+        ui: [data],
       },
     });
-    return this.client.data.shared.io.length - 1;
+    return this.client.data.shared.ui.length - 1;
   }
 
   renderAppend(data) {
@@ -105,11 +109,11 @@ class ClientIO {
       ...this.client.data,
       shared: {
         ...this.client.data.shared,
-        io: [...this.client.data.shared.io, data],
+        ui: [...this.client.data.shared.ui, data],
       },
     });
 
-    return this.client.data.shared.io.length - 1;
+    return this.client.data.shared.ui.length - 1;
   }
 }
 
