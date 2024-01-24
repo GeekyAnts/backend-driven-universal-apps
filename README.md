@@ -8,7 +8,9 @@ Taking inspirations from the WordPress Plugin system. Wouldn't it be easy if we 
 
 ## Demo
 
-[![Backend Driven Universal Apps](screencast/screenshot.png)](https://www.loom.com/share/5354c3e306cb41ec92daa4b00130c5bd](https://www.loom.com/share/eb731f2a327f456ab0986bcb8f616357) "Backend Driven Universal Apps")
+[![Backend Driven Universal Apps](screencast/screenshot.png)](https://www.loom.com/share/eb731f2a327f456ab0986bcb8f616357 "Backend Driven Universal Apps")
+
+
 
 ## The state of this experiment
 
